@@ -11,7 +11,7 @@
 | @Luis Cristian Rafaele Huaman | Desarrollador | Cursos |
 | @Daniel Benjamin Quispirroca Benitez | Desarrollador | Inscripciones |
 | @Edwards Andree Ochoa Cutipa | Desarrollador | Progreso |
-| @Urpi Radhakrina Pilco Del Alamo | Desarrollador | Certificados |
+| @Urpi Radhakrisna Pilco Del Alamo | Desarrollador | Certificados |
 
 ## 📖 Introducción
 
@@ -190,3 +190,64 @@ Figura 5. Pull Request y verificación automática con GitHub Actions
 <img width="700" alt="Pull Request y CI" src="docs/capturas/inscripciones/fig5-pr-ci.png" />
 
 Pull Request enviado a la rama main de JhimyMc/mini-Udemy. El flujo CI construye las imágenes, levanta los contenedores y ejecuta las pruebas de cada microservicio con resultado exitoso; queda pendiente la revisión del líder para fusionar.
+
+**Urpi -> sakataaaaaa (Microservicio Certificados)**
+
+El microservicio **Certificados** (puerto 3005) emite el certificado de un estudiante cuando su progreso llega al 100 %. Antes de guardarlo, consulta por HTTP a **Inscripciones** (para validar que la inscripción exista) y a **Progreso** (para verificar que el porcentaje sea 100). Cada certificado recibe un código único con formato `MU-XXXXXXXX`, que un empleador puede usar para verificarlo.
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/health` | Estado del servicio |
+| GET | `/certificados` | Lista todos los certificados |
+| GET | `/certificados/:id` | Consulta un certificado (404 si no existe) |
+| GET | `/certificados/codigo/:codigo` | Verifica un certificado por su código (404 si no existe) |
+| POST | `/certificados` | Emite un certificado (400 si la inscripción no existe o el curso no está completado, 409 si ya existe, 503 si no responde Inscripciones o Progreso) |
+| DELETE | `/certificados/:id` | Elimina un certificado |
+
+Figura 1. Fork del repositorio en GitHub
+
+<img width="700" alt="Fork en GitHub" src="docs/capturas/certificados/fig1-fork.jpeg" />
+
+Se evidencia el fork sakataaaaaa/mini-Udemy creado a partir de JhimyMc/mini-Udemy.
+
+Figura 2. Remotos origin y upstream
+
+<img width="700" alt="git remote -v" src="docs/capturas/certificados/fig2-remotes.jpeg" />
+
+Se evidencia el repositorio clonado con el remoto origin (fork) y el remoto upstream (repositorio del líder).
+
+Figura 3. Rama feature/certificados
+
+<img width="700" alt="git branch" src="docs/capturas/certificados/fig3-rama.jpeg" />
+
+Se evidencia la creación de la rama feature/certificados a partir de main.
+
+Figura 4. Commits del microservicio
+
+<img width="700" alt="git log" src="docs/capturas/certificados/fig4-commits.jpeg" />
+
+Se evidencian los dos primeros commits: estructura, conexión a BD y Dockerfile; y API REST e init.sql.
+
+Figura 5. Despliegue con Docker Compose
+
+<img width="700" alt="docker compose ps" src="docs/capturas/certificados/fig5-docker.jpeg" />
+
+Se evidencia el inicio de los cinco servicios y sus bases de datos PostgreSQL en estado Healthy.
+
+Figura 6. Ejecución satisfactoria de las pruebas automatizadas
+
+<img width="700" alt="Pruebas Jest" src="docs/capturas/certificados/fig6-tests.jpeg" />
+
+Se evidencia la ejecución de cinco pruebas (X1 a X5) con Jest y Supertest, todas aprobadas, verificando la emisión, la verificación por código, el rechazo de cursos incompletos y de certificados duplicados.
+
+Figura 7. Emisión, verificación y rechazo de certificados
+
+<img width="700" alt="Demo con curl" src="docs/capturas/certificados/fig7-demo.jpeg" />
+
+Se evidencia la emisión de un certificado para una inscripción con 100 % (código MU-9A50825D), su verificación por código (200) y el rechazo de una inscripción con 33 % (400, "El curso no está completado").
+
+Figura 8. Commits y push de la rama
+
+<img width="700" alt="git push" src="docs/capturas/certificados/fig8-push.jpeg" />
+
+Se evidencian los tres commits del microservicio y el push exitoso de la rama feature/certificados al fork.
