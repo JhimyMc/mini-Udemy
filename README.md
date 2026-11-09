@@ -147,6 +147,46 @@ Evidencias de aprobacion y revision:
 
 
  
- 
- 
 
+**Evidencias**
+**Daniel -> Daniel318767 (Microservicio Inscripciones)**
+
+El microservicio **Inscripciones** (puerto 3003) registra la inscripción de un estudiante en un curso. Antes de guardar, consulta por HTTP a **Estudiantes** y a **Cursos** para validar que ambos existan, y evita inscripciones duplicadas. Sus datos son consultados luego por **Progreso** y **Certificados**.
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/health` | Estado del servicio |
+| GET | `/inscripciones` | Lista todas las inscripciones |
+| GET | `/inscripciones/:id` | Consulta una inscripción (404 si no existe) |
+| POST | `/inscripciones` | Crea una inscripción (400 si el estudiante o curso no existe, 409 si ya está inscrito, 503 si no responde Estudiantes o Cursos) |
+| DELETE | `/inscripciones/:id` | Elimina una inscripción |
+
+Figura 1. Rama feature/inscripciones y commits del microservicio
+
+<img width="700" alt="Rama y commits de Inscripciones" src="docs/capturas/inscripciones/fig1-rama-commits.png" />
+
+Se evidencia la rama feature/inscripciones, creada a partir de main y ya subida a GitHub (origin/feature/inscripciones), con sus tres commits: estructura, conexión a BD y Dockerfile; API REST e init.sql; y pruebas automatizadas.
+
+Figura 2. Despliegue con Docker Compose desde Ubuntu (WSL)
+
+<img width="700" alt="Docker Compose" src="docs/capturas/inscripciones/fig2-docker.png" />
+
+Se evidencia la construcción de las imágenes y el inicio de los contenedores de Estudiantes, Cursos e Inscripciones, con sus bases de datos PostgreSQL en estado Healthy.
+
+Figura 3. Consulta de las inscripciones iniciales
+
+<img width="700" alt="GET /inscripciones" src="docs/capturas/inscripciones/fig3-api.png" />
+
+Se evidencia la respuesta del endpoint GET /inscripciones (puerto 3003) con los tres registros iniciales definidos en init.sql.
+
+Figura 4. Ejecución satisfactoria de las pruebas automatizadas
+
+<img width="700" alt="Pruebas Jest" src="docs/capturas/inscripciones/fig4-tests.png" />
+
+Se evidencia la ejecución de seis pruebas (I1 a I6) con Jest y Supertest, todas aprobadas, verificando la validación contra Estudiantes y Cursos, el rechazo de datos inexistentes y de inscripciones duplicadas.
+
+Figura 5. Pull Request y verificación automática con GitHub Actions
+
+<img width="700" alt="Pull Request y CI" src="docs/capturas/inscripciones/fig5-pr-ci.png" />
+
+Pull Request enviado a la rama main de JhimyMc/mini-Udemy. El flujo CI construye las imágenes, levanta los contenedores y ejecuta las pruebas de cada microservicio con resultado exitoso; queda pendiente la revisión del líder para fusionar.
